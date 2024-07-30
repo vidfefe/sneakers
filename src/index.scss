@@ -31,6 +31,7 @@ header{
   }
 
   li{
+    cursor: pointer;
     img{
       margin-right: 8px;
     }
@@ -40,39 +41,6 @@ header{
 .content{
   h1{
     margin: 0;
-  }
-}
-
-.card{  
-  border: 1px solid #d6d6d6;
-  border-radius: 40px;
-  width: 210px;
-  background: rgb(255, 255, 255);
-  padding: 20px;
-  margin-right: 40px;
-  transition: box-shadow 0.2s ease-in-out, transform  0.2s ease-in-out;
- 
-
-  &:hover{
-    box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.06);
-    transform: translateY(-5px);
-  }
-
-  h5{
-    font-size: 14px;
-    font-weight: 400;
-    margin-block:1.2em ;
-  }
-
-  span{   
-    opacity: 0.5;
-    font-size: 13px;
-    text-transform: uppercase;
-  }
-
-  .favorite{
-    position: absolute;
-    cursor: pointer;
   }
 }
 
@@ -91,6 +59,15 @@ header{
   border: 1px solid #d6d6d6;
   border-radius: 10px;
   padding: 0 15px;
+  position: relative;
+
+  .clear{
+    position: absolute;
+    right: 15px;
+    width: 18px;
+    height: 18px;
+    top: 13px;
+  }
 
   input{
     border: 0;
@@ -129,11 +106,47 @@ header{
 
   .items{
     flex:1;
-    overflow: auto;
+    overflow-y:auto;
     margin-bottom: 20px;
   }
 }
 
+
+.cartEmpty{
+  text-align: center;
+  flex: 1;
+  
+  h2{
+    margin: 0;
+  }
+
+  p{
+    line-height: 24px;
+    width: 280px;
+  }
+
+  .greenButton{
+    margin-top: 20px;
+    width: 245px;
+
+
+    &:hover{
+      img{
+        transform: rotate(180deg) translateX(3px);
+      }
+    }
+
+    img{
+      position: relative;
+      transform: rotate(180deg);
+      margin-right: 15px;
+      top: 1px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+
+  }
+}
 
 .cartItem{
   box-sizing: border-box;
@@ -192,6 +205,11 @@ header{
 
   .greenButton{
     position: relative;
+
+    &:disabled {
+      animation: button-loading 0.6s ease-in-out infinite;
+    }
+    
     
     &:hover{
       img{
@@ -227,5 +245,25 @@ header{
 
   &:active{
     background: darken($color: rgb(157, 213, 88), $amount: 5%);
+  }
+
+  &:disabled {
+    background-color: #bebebe !important;
+    cursor: default;
+  }
+
+}
+
+@keyframes button-loading {
+  0%{
+    opacity: 1;
+  }
+
+  50%{
+    opacity: 0.6;
+  }
+
+  100%{
+    opacity: 1;
   }
 }
