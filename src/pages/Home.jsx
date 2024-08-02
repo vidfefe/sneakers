@@ -1,7 +1,11 @@
 import Card from "../components/Card";
+import AppContext from "../context";
+import React from "react";
 
-function Home ({items, searchValue, onAddToCart, onAddToFavorites,setSearchValue, onChangeSearchInput, cartItems,isLoading }){
+function Home ({items, searchValue,setSearchValue, onChangeSearchInput, cartItems,isLoading }){
     
+  const {onAddToCart, onAddToFavorites} = React.useContext(AppContext);
+
     const renderItems = () => {
         const filtredItems = items.filter((item) => 
             item.title.toLowerCase().includes(searchValue)

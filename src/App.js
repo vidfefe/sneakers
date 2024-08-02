@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import AppContext from "./context";
+import Orders from "./pages/Orders";
 
 
 
@@ -35,6 +36,15 @@ function App() {
     fetchData();
   },[]);
 
+  React.useEffect(() => {
+    if (cartOpened) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset'; 
+    }
+  
+   
+  }, [cartOpened]);
 
   const onAddToCart = (obj) =>{
     if(cartItems.find((item)=> Number(item.id)=== Number(obj.id))){
@@ -76,19 +86,24 @@ function App() {
     return cartItems.some((obj) => Number(obj.id) === Number(id))
   };
 
+  const isItemLiked= (id) =>{
+    return favoritesItems.some((obj) => Number(obj.id) === Number(id))
+  };
+
   return (
-    <AppContext.Provider value = {{items,cartItems, favoritesItems,isItemAdded, setCartOpened, setCartItems}}>
+    <AppContext.Provider value = {{items,cartItems, favoritesItems,isItemAdded, isItemLiked, onAddToFavorites, onAddToCart, setCartOpened, setCartItems}}>
       <div className="wrapper clear">
-      {cartOpened ? <Drawer items = {cartItems} onCloseCart={()=> setCartOpened(false)} onRemove={onRemoveItem}></Drawer> : null}
+       <Drawer items = {cartItems} onCloseCart={()=> setCartOpened(false)} onRemove={onRemoveItem} opened = {cartOpened}></Drawer> 
       
 
       <Header onClickCart= {()=> setCartOpened(true)}></Header>
 
         <Routes>
           <Route path="/" element={
-            <Home items={items}  isLoading = {isLoading} searchValue={searchValue} onAddToCart={onAddToCart} cartItems= {cartItems} onAddToFavorites={onAddToFavorites} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput}></Home>}>
+            <Home items={items}  isLoading = {isLoading} searchValue={searchValue}  cartItems= {cartItems}  setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput}></Home>}>
           </Route>
           <Route path="/favorites" element={<Favorites onAddToFavorites={onAddToFavorites}></Favorites>}></Route>
+          <Route path="/orders" element={<Orders></Orders>}></Route>
         </Routes>
       </div>
     </AppContext.Provider>

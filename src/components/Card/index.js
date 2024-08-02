@@ -4,17 +4,16 @@ import ContentLoader from "react-content-loader";
 import AppContext from '../../context';
 
 
-function Card({id, title,price,imageUrl, OnPlus, OnLiked, favorited = false, loading = false}){
+function Card({id, title,price,imageUrl, OnPlus, OnLiked, loading = false}){
 
-  const {isItemAdded, onAddToFavorites} = React.useContext(AppContext);
-  const [isLiked, setIsLiked] = React.useState(favorited);
+  const {isItemAdded, isItemLiked} = React.useContext(AppContext);
+
 
   const onClickPlus = () => {
     OnPlus({id, title,price,imageUrl});
   };
 
   const onClickLiked = () => {
-      setIsLiked(!isLiked);
       OnLiked({id, title,price,imageUrl});
   }
 
@@ -39,9 +38,9 @@ function Card({id, title,price,imageUrl, OnPlus, OnLiked, favorited = false, loa
       </ContentLoader> :
 
         <>
-          <div onClick= {onClickLiked} className={styles.favorite}>
-                <img src={isLiked ? '/img/heart-liked.svg': '/img/heart-unliked.svg'} alt="Unliked"></img>
-              </div>
+          { OnLiked && (<div onClick= {onClickLiked} className={styles.favorite}>
+                <img src={isItemLiked(id) ? '/img/heart-liked.svg': '/img/heart-unliked.svg'} alt="Unliked"></img>
+            </div>)}
             
               <img  width={133} height={112} src={imageUrl} alt="Sneakers 1"></img>
               <h5>{title}</h5>
@@ -50,9 +49,9 @@ function Card({id, title,price,imageUrl, OnPlus, OnLiked, favorited = false, loa
                   <span>Цена:</span>
                   <b>{price} руб.</b>
                 </div>
-                <button onClick={onClickPlus} className="button">
+                {OnPlus && (< button onClick={onClickPlus} className="button">
                   <img width={32} height={32} src={isItemAdded(id) ? '/img/btn-checked.svg' : '/img/btn-plus.svg' } alt="Plus"></img>
-                </button>
+                </button>)}
               </div>
         </>
       }

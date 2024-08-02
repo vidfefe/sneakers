@@ -1,12 +1,12 @@
-
-import Info from "./Info";
+import styles  from "./Drawer.module.scss";
+import Info from "../Info";
 import React from "react";
 import axios from "axios";
-import { useCart } from "../hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-function Drawer({onCloseCart, items = [], onRemove}){
+function Drawer({onCloseCart, items = [], onRemove, opened}){
     const [isOrdered, setIsOrdered] = React.useState(false);
     const [orderId, setOrderId] = React.useState(null);
     const [isLoading,setIsLoading] = React.useState(false);
@@ -38,9 +38,9 @@ function Drawer({onCloseCart, items = [], onRemove}){
     }
 
     return(
-        <div className="overlay">
+        <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
         
-            <div className="drawer">
+            <div className={styles.drawer}>
             <h2 className="mb-20 d-flex justify-between align-center">
                 Корзина
             <img onClick= {onCloseCart} className="removebtn cu-p" src="/img/btn-remove.svg" alt="Remove"></img>
@@ -48,7 +48,7 @@ function Drawer({onCloseCart, items = [], onRemove}){
 
             {items.length > 0 ? (
                 <div className="d-flex flex-column flex">
-                    <div className="items ">
+                    <div className={styles.items}>
                     {items.map((obj)=>(
                         <div key={obj.id} className="cartItem d-flex align-center justify-between  mb-20">
                     <img className=" cartItemSneakers mr-20" src={obj.imageUrl} alt="Sneakers 2"></img>
